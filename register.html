@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Running Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="auth-container">
+
+        <!-- Logo / Title -->
+        <div class="auth-header">
+            <h1>🏃 Running Tracker</h1>
+            <p>Create your free account</p>
+        </div>
+
+        <!-- Show error message if any -->
+        <?php if (isset($_GET['error'])): ?>
+            <div class="alert alert-error">
+                <?php echo htmlspecialchars($_GET['error']); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Show success message if any -->
+        <?php if (isset($_GET['success'])): ?>
+            <div class="alert alert-success">
+                <?php echo htmlspecialchars($_GET['success']); ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- Registration Form -->
+        <form action="register.php" method="POST">
+
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" 
+                       placeholder="e.g. Shishir Kumar Singh" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" 
+                       placeholder="e.g. shishir@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" 
+                       placeholder="e.g. shishir123" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" 
+                       placeholder="Minimum 6 characters" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" 
+                       placeholder="Repeat your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+
+        </form>
+
+        <!-- Link to login -->
+        <div class="auth-footer">
+            <p>Already have an account? <a href="index.php">Login here</a></p>
+        </div>
+
+    </div>
+
+</body>
+</html>
