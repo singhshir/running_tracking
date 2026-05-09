@@ -8,24 +8,23 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// Get logged in user info
 $user_id = $_SESSION['user_id'];
 
 // Show success or error message
 $message = '';
 if (isset($_GET['success'])) {
-    $message = '<div class="alert alert-success">' . 
+    $message = '<div class="alert alert-success">✅ ' .
                 htmlspecialchars($_GET['success']) . '</div>';
 }
 if (isset($_GET['error'])) {
-    $message = '<div class="alert alert-error">' . 
+    $message = '<div class="alert alert-error">❌ ' .
                 htmlspecialchars($_GET['error']) . '</div>';
 }
 
 // Get ALL runs for this user
 $runs_result = mysqli_query($conn,
-    "SELECT * FROM run_activity 
-     WHERE user_id = '$user_id' 
+    "SELECT * FROM run_activity
+     WHERE user_id = '$user_id'
      ORDER BY run_date DESC");
 
 $total_runs = mysqli_num_rows($runs_result);
@@ -74,7 +73,12 @@ $total_runs = mysqli_num_rows($runs_result);
 
         <!-- Runs Table -->
         <?php if ($total_runs == 0): ?>
-            <div style="text-align:center; padding:60px; color:var(--text-muted);">
+            <div style="text-align:center;
+                        padding:60px;
+                        color:var(--text-muted);
+                        background:var(--card-bg);
+                        border:1px solid var(--card-border);
+                        border-radius:var(--radius-lg);">
                 <p style="font-size:64px;">🏃</p>
                 <p style="font-size:20px; margin-bottom:8px;">
                     No runs logged yet!
@@ -103,14 +107,14 @@ $total_runs = mysqli_num_rows($runs_result);
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
+                        <?php
                         $count = 1;
-                        while ($run = mysqli_fetch_assoc($runs_result)): 
+                        while ($run = mysqli_fetch_assoc($runs_result)):
                         ?>
                         <tr>
                             <td><?php echo $count++; ?></td>
                             <td>
-                                <?php echo date('M d, Y', 
+                                <?php echo date('M d, Y',
                                     strtotime($run['run_date'])); ?>
                             </td>
                             <td>
@@ -126,9 +130,9 @@ $total_runs = mysqli_num_rows($runs_result);
                             </td>
                             <td>🔥 <?php echo $run['calories_burned']; ?></td>
                             <td>
-                                <?php echo $run['notes'] 
-                                    ? htmlspecialchars($run['notes']) 
-                                    : '<span style="color:var(--text-muted)">—</span>'; 
+                                <?php echo $run['notes']
+                                    ? htmlspecialchars($run['notes'])
+                                    : '<span style="color:var(--text-muted)">—</span>';
                                 ?>
                             </td>
                             <td>
@@ -145,10 +149,10 @@ $total_runs = mysqli_num_rows($runs_result);
                 </table>
             </div>
 
-            <!-- Summary Row -->
-            <div style="margin-top:20px; 
-                        text-align:right; 
-                        color:var(--text-muted); 
+            <!-- Total count -->
+            <div style="margin-top:20px;
+                        text-align:right;
+                        color:var(--text-muted);
                         font-size:14px;">
                 Total <?php echo $total_runs; ?> run(s) recorded
             </div>
