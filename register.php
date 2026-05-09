@@ -23,6 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit();
     }
 
+    // ✅ Check Gmail only (server-side)
+    if (!preg_match('/^[a-zA-Z0-9._%+\-]+@gmail\.com$/i', $email)) {
+        header("Location: register.php?error=Only Gmail addresses are allowed (e.g. name@gmail.com)");
+        exit();
+    }
+
     // Check passwords match
     if ($password !== $confirm_password) {
         header("Location: register.php?error=Passwords do not match");
@@ -111,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <!-- Register Form -->
-        <form action="register.php" method="POST">
+        <form action="register.php" method="POST" id="registerForm">
 
             <div class="form-group">
                 <label for="name">Full Name</label>
@@ -127,8 +133,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="email"
                        id="email"
                        name="email"
-                       placeholder="e.g. shishir@email.com"
+                       placeholder="e.g. shishir@gmail.com"
                        required>
+                <!-- ✅ Gmail error message shown here -->
+                <span id="email-error" style="color: red; font-size: 13px; display: none;">
+                    ❌ Only Gmail addresses are allowed (e.g. name@gmail.com)
+                </span>
             </div>
 
             <div class="form-group">
@@ -173,6 +183,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </div>
+
+    <!-- ✅ Gmail validation JavaScript -->
+    <script>
+        const emailInput = document.getElementById('email');
+        const emailError = document.getElementById('email-error');
+        const registerForm = document.getElementById('registerForm');
+
+        // Show error while typing
+        emailInput.addEventListener('input', function () {
+            const value = this.value;
+            if (value.length > 0 && !/^[a-zA-Z0-9._%+\-]+@gmail\.com$/i.test(value)) {
+                emailError.style.display = 'block';
+            } else {
+                emailError.style.display = 'none';
+            }
+        });
+
+        // Block form submit if not Gmail
+        registerForm.addEventListener('submit', function (e) {
+            const value = emailInput.value;
+            if (!/^[a-zA-Z0-9._%+\-]+@gmail\.com$/i.test(value)) {
+                e.preventDefault();
+                emailError.style.display = 'block';
+                emailInput.focus();
+            }
+        });
+    </script>
 
 </body>
 </html>
